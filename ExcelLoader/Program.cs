@@ -33,7 +33,6 @@ namespace ExcelLoader
         .OrderBy(p => p.Name);
         WriteToFile(filtered);
       }
-      
     }
     
     /// <summary>
@@ -61,8 +60,8 @@ namespace ExcelLoader
     #region Конструкторы
     static Program()
     {
-      var executedPath = new DirectoryInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
-      ExcelFilePath = $@"{executedPath.Parent.Parent.Parent.Parent.FullName}\book.xlsx";
+      var executedPath = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+      ExcelFilePath = $@"{executedPath.Parent.Parent.Parent.FullName}\book.xlsx";
     }
     #endregion
   }
