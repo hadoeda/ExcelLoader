@@ -41,8 +41,7 @@ namespace ExcelLoader
     /// <param name="records">Записи</param>
     static void WriteToFile(IEnumerable<PriceRecord> records)
     {
-      using(var stream = new FileStream(SaveFileName, FileMode.Create))
-      using (var file = new StreamWriter(stream))
+      using (var file = new StreamWriter(SaveFileName, false))
       {
         var savingRecords = new StringBuilder();
         foreach(var record in records)
