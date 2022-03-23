@@ -8,31 +8,42 @@ using System.Threading.Tasks;
 
 namespace ExcelLoader
 {
+  /// <summary>
+  /// Класс загружает из Excel документа данные о товарах.
+  /// </summary>
   internal sealed class ExcelPriceLoader : IDisposable
   {
     #region Константы
+
     /// <summary>
-    /// Номер колонки с именем товара
+    /// Номер колонки с именем товара.
     /// </summary>
     private const int NamePosition = 1;
 
     /// <summary>
-    /// Номер колонки с ценой товара
+    /// Номер колонки с ценой товара.
     /// </summary>
     private const int PricePosition = 2;
+    
     #endregion
 
-    #region Поля
+    #region Свойства и поля
+
+    /// <summary>
+    /// Экземпляр Excel.Application.
+    /// </summary>
     private readonly Application excelApplication;
+    
     #endregion
 
     #region Методы
+
     /// <summary>
-    /// Читает данные из указанного excel файла
+    /// Читает данные из указанного excel файла.
     /// </summary>
-    /// <param name="filename">Имя файла</param>
-    /// <param name="sheet">Номер листа</param>
-    /// <returns>Коллекция записей PriceRecord</returns>
+    /// <param name="filename">Имя файла.</param>
+    /// <param name="sheet">Номер листа.</param>
+    /// <returns>Коллекция записей PriceRecord.</returns>
     public IEnumerable<PriceRecord> Load(string filename, int sheet = 1)
     {
       var workBook = this.excelApplication.Workbooks.Open(filename, 0, true);
@@ -68,10 +79,10 @@ namespace ExcelLoader
     }
 
     /// <summary>
-    /// Сохраняет коллекция в указанный файл
+    /// Сохраняет коллекция в указанный файл.
     /// </summary>
-    /// <param name="filename">Имя файла</param>
-    /// <param name="records">Коллекция записей PriceRecord</param>
+    /// <param name="filename">Имя файла.</param>
+    /// <param name="records">Коллекция записей PriceRecord.</param>
     public void Save(string filename, IEnumerable<PriceRecord> records)
     {
       var workBook = this.excelApplication.Workbooks.Add();
@@ -99,21 +110,32 @@ namespace ExcelLoader
         Marshal.ReleaseComObject(workBook);
       }
     }
+
     #endregion
 
     #region IDisposable
+
+    /// <summary>
+    /// Освобождение не управляемых ресурсов.
+    /// </summary>
     public void Dispose()
     {
       this.excelApplication.Quit();
       Marshal.ReleaseComObject(this.excelApplication); 
     }
+    
     #endregion
 
     #region Конструкторы
+
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
     public ExcelPriceLoader()
     {
       this.excelApplication = new Application();
     }
+    
     #endregion
   }
 }

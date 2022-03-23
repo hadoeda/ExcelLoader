@@ -8,22 +8,32 @@ using Microsoft.Office.Interop.Excel;
 
 namespace ExcelLoader
 {
-  class Program
+  /// <summary>
+  /// Основной класс приложения.
+  /// </summary>
+  public class Program
   {
     #region Константы
+
     /// <summary>
-    /// Путь к excel файлу
+    /// Путь к excel файлу.
     /// </summary>
     private static readonly string ExcelFilePath;
 
     /// <summary>
-    /// Имя файла для сохранения записей
+    /// Имя файла для сохранения записей.
     /// </summary>
     private const string SaveFileName = "sorted.txt";
+    
     #endregion
 
     #region Методы
-    static void Main(string[] args)
+
+    /// <summary>
+    /// Точка входа в приложение.
+    /// </summary>
+    /// <param name="args">Аргументы командной строки.</param>
+    public static void Main(string[] args)
     {
       using (var loader = new ExcelPriceLoader()) 
       {
@@ -36,10 +46,10 @@ namespace ExcelLoader
     }
     
     /// <summary>
-    /// Записывет записи в файл
+    /// Записывет записи в файл.
     /// </summary>
-    /// <param name="records">Записи</param>
-    static void WriteToFile(IEnumerable<PriceRecord> records)
+    /// <param name="records">Записи.</param>
+    private static void WriteToFile(IEnumerable<PriceRecord> records)
     {
       using (var file = new StreamWriter(SaveFileName, false))
       {
@@ -57,11 +67,16 @@ namespace ExcelLoader
     #endregion
 
     #region Конструкторы
+
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
     static Program()
     {
       var executedPath = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
       ExcelFilePath = $@"{executedPath.Parent.Parent.Parent.FullName}\book.xlsx";
     }
+
     #endregion
   }
 }
