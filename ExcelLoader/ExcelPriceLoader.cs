@@ -24,7 +24,7 @@ namespace ExcelLoader
     /// Номер колонки с ценой товара.
     /// </summary>
     private const int PricePosition = 2;
-    
+
     #endregion
 
     #region Свойства и поля
@@ -33,7 +33,7 @@ namespace ExcelLoader
     /// Экземпляр Excel.Application.
     /// </summary>
     private readonly Application excelApplication;
-    
+
     #endregion
 
     #region Методы
@@ -57,16 +57,13 @@ namespace ExcelLoader
 
         for (int i = 1; i <= range.Rows.Count; i++)
         {
-          var name = ((Range)range.Cells[i, NamePosition]).Value2 as string;
+          var name = ((Range)range.Cells[i, NamePosition]).Value2;
           var price = ((Range)range.Cells[i, PricePosition]).Value2 as double?;
-          if (name == null || price == null) continue;
+          if (name == null || price == null)
+            continue;
 
-          result.Add(new PriceRecord(name, price.Value));
+          result.Add(new PriceRecord(name.ToString(), price.Value));
         }
-      }
-      catch(Exception e)
-      {
-        throw e;
       }
       finally
       {
@@ -99,10 +96,6 @@ namespace ExcelLoader
 
         workBook.SaveAs(filename);
       }
-      catch (Exception e)
-      {
-        throw e;
-      }
       finally
       {
         Marshal.ReleaseComObject(workSheet);
@@ -121,9 +114,9 @@ namespace ExcelLoader
     public void Dispose()
     {
       this.excelApplication.Quit();
-      Marshal.ReleaseComObject(this.excelApplication); 
+      Marshal.ReleaseComObject(this.excelApplication);
     }
-    
+
     #endregion
 
     #region Конструкторы
@@ -135,7 +128,7 @@ namespace ExcelLoader
     {
       this.excelApplication = new Application();
     }
-    
+
     #endregion
   }
 }

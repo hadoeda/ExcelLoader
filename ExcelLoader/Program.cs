@@ -24,7 +24,7 @@ namespace ExcelLoader
     /// Имя файла для сохранения записей.
     /// </summary>
     private const string SaveFileName = "sorted.txt";
-    
+
     #endregion
 
     #region Методы
@@ -35,7 +35,7 @@ namespace ExcelLoader
     /// <param name="args">Аргументы командной строки.</param>
     public static void Main(string[] args)
     {
-      using (var loader = new ExcelPriceLoader()) 
+      using (var loader = new ExcelPriceLoader())
       {
         var prices = loader.Load(ExcelFilePath);
 
@@ -44,7 +44,7 @@ namespace ExcelLoader
         WriteToFile(filtered);
       }
     }
-    
+
     /// <summary>
     /// Записывет записи в файл.
     /// </summary>
@@ -73,8 +73,7 @@ namespace ExcelLoader
     /// </summary>
     static Program()
     {
-      var executedPath = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-      ExcelFilePath = $@"{executedPath.Parent.Parent.Parent.FullName}\book.xlsx";
+      ExcelFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\book.xlsx";
     }
 
     #endregion
