@@ -40,7 +40,7 @@ namespace ExcelLoader
         var prices = loader.Load(ExcelFilePath);
 
         var filtered = prices.Where(p => p.Price > 2000)
-        .OrderBy(p => p.Name);
+          .OrderBy(p => p.Name);
         WriteToFile(filtered);
       }
     }
