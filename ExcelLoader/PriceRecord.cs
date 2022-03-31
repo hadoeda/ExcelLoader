@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ExcelLoader
+﻿namespace ExcelLoader
 {
   /// <summary>
   /// Запись "Товар - Цена".
@@ -17,7 +11,7 @@ namespace ExcelLoader
     /// Имя товара.
     /// </summary>
     public string Name { get; private set; }
-    
+
     /// <summary>
     /// Цена товара.
     /// </summary>
@@ -26,7 +20,7 @@ namespace ExcelLoader
     #endregion
 
     #region Конструкторы
-    
+
     /// <summary>
     /// Конструктор.
     /// </summary>

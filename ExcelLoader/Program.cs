@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Office.Interop.Excel;
 
 namespace ExcelLoader
 {
@@ -24,6 +21,11 @@ namespace ExcelLoader
     /// Имя файла для сохранения записей.
     /// </summary>
     private const string SaveFileName = "sorted.txt";
+
+    /// <summary>
+    /// Имя excel файла.
+    /// </summary>
+    private const string FileName = "book.xlsx";
 
     #endregion
 
@@ -46,21 +48,16 @@ namespace ExcelLoader
     }
 
     /// <summary>
-    /// Записывет записи в файл.
+    /// Записать товары в файл.
     /// </summary>
-    /// <param name="records">Записи.</param>
+    /// <param name="records">Товары.</param>
     private static void WriteToFile(IEnumerable<PriceRecord> records)
     {
       using (var file = new StreamWriter(SaveFileName, false))
       {
-        var savingRecords = new StringBuilder();
-        foreach(var record in records)
-        {
-          savingRecords.Append($"{record.Name}  {record.Price}");
-          savingRecords.AppendLine();
-        }
+        foreach (var record in records)
+          file.WriteLine($"{record.Name}  {record.Price}");
 
-        file.Write(savingRecords);
         file.Flush();
       }
     }
@@ -73,7 +70,7 @@ namespace ExcelLoader
     /// </summary>
     static Program()
     {
-      ExcelFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\book.xlsx";
+      ExcelFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{FileName}";
     }
 
     #endregion

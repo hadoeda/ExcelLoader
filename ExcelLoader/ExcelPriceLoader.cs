@@ -1,15 +1,13 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExcelLoader
 {
   /// <summary>
-  /// Класс загружает из Excel документа данные о товарах.
+  /// Загрузчик цен товаров их Excel.
   /// </summary>
   internal sealed class ExcelPriceLoader : IDisposable
   {
@@ -39,11 +37,12 @@ namespace ExcelLoader
     #region Методы
 
     /// <summary>
-    /// Читает данные из указанного excel файла.
+    /// Прочитать данные о товарах из excel файла.
     /// </summary>
     /// <param name="filename">Имя файла.</param>
     /// <param name="sheet">Номер листа.</param>
     /// <returns>Коллекция записей PriceRecord.</returns>
+    /// <exception cref="InvalidDataException">Количество заполненных колонок меньше номера колонки с ценой.</exception>
     public IEnumerable<PriceRecord> Load(string filename, int sheet = 1)
     {
       var workBook = this.excelApplication.Workbooks.Open(filename, 0, true);
@@ -53,7 +52,7 @@ namespace ExcelLoader
       {
         var range = workSheet.UsedRange;
         if (range.Columns.Count < PricePosition)
-          throw new Exception("Wrong data in the file");
+          throw new InvalidDataException($"Used range columns count is less than {PricePosition}");
 
         for (int i = 1; i <= range.Rows.Count; i++)
         {
@@ -73,35 +72,6 @@ namespace ExcelLoader
       }
 
       return result;
-    }
-
-    /// <summary>
-    /// Сохраняет коллекция в указанный файл.
-    /// </summary>
-    /// <param name="filename">Имя файла.</param>
-    /// <param name="records">Коллекция записей PriceRecord.</param>
-    public void Save(string filename, IEnumerable<PriceRecord> records)
-    {
-      var workBook = this.excelApplication.Workbooks.Add();
-      var workSheet = workBook.Worksheets.Item[1];
-      try
-      {
-        int i = 1;
-        foreach(var record in records)
-        {
-          workSheet.Cells[i, NamePosition] = record.Name;
-          workSheet.Cells[i, PricePosition] = record.Price;
-          i++;
-        }
-
-        workBook.SaveAs(filename);
-      }
-      finally
-      {
-        Marshal.ReleaseComObject(workSheet);
-        workBook.Close();
-        Marshal.ReleaseComObject(workBook);
-      }
     }
 
     #endregion
