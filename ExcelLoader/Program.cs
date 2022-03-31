@@ -18,14 +18,19 @@ namespace ExcelLoader
     private static readonly string ExcelFilePath;
 
     /// <summary>
+    /// Путь к выходному файлу.
+    /// </summary>
+    private static readonly string OutFilePath;
+
+    /// <summary>
     /// Имя файла для сохранения записей.
     /// </summary>
-    private const string SaveFileName = "sorted.txt";
+    private const string OutFileName = "sorted.txt";
 
     /// <summary>
     /// Имя excel файла.
     /// </summary>
-    private const string FileName = "book.xlsx";
+    private const string ExcelFileName = "book.xlsx";
 
     #endregion
 
@@ -53,7 +58,7 @@ namespace ExcelLoader
     /// <param name="records">Товары.</param>
     private static void WriteToFile(IEnumerable<PriceRecord> records)
     {
-      using (var file = new StreamWriter(SaveFileName, false))
+      using (var file = new StreamWriter(OutFilePath, false))
       {
         foreach (var record in records)
           file.WriteLine($"{record.Name}  {record.Price}");
@@ -70,7 +75,8 @@ namespace ExcelLoader
     /// </summary>
     static Program()
     {
-      ExcelFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{FileName}";
+      ExcelFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{ExcelFileName}";
+      OutFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{OutFileName}";
     }
 
     #endregion
