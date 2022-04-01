@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 namespace ExcelLoader
 {
   /// <summary>
-  /// Загрузчик цен товаров их Excel.
+  /// Загрузчик товаров их Excel.
   /// </summary>
-  internal sealed class ExcelPriceLoader : IDisposable
+  internal sealed class ExcelProductLoader : IDisposable
   {
     #region Константы
 
@@ -43,11 +43,11 @@ namespace ExcelLoader
     /// <param name="sheet">Номер листа.</param>
     /// <returns>Коллекция записей PriceRecord.</returns>
     /// <exception cref="InvalidDataException">Количество заполненных колонок меньше номера колонки с ценой.</exception>
-    public IEnumerable<PriceRecord> Load(string filename, int sheet = 1)
+    public IEnumerable<Product> Load(string filename, int sheet = 1)
     {
       var workBook = this.excelApplication.Workbooks.Open(filename, 0, true);
       var workSheet = (Worksheet)workBook.Worksheets.Item[sheet];
-      var result = new List<PriceRecord>();
+      var result = new List<Product>();
       try
       {
         var range = workSheet.UsedRange;
@@ -61,7 +61,7 @@ namespace ExcelLoader
           if (name == null || price == null)
             continue;
 
-          result.Add(new PriceRecord(name.ToString(), price.Value));
+          result.Add(new Product(name.ToString(), price.Value));
         }
       }
       finally
@@ -94,7 +94,7 @@ namespace ExcelLoader
     /// <summary>
     /// Конструктор.
     /// </summary>
-    public ExcelPriceLoader()
+    public ExcelProductLoader()
     {
       this.excelApplication = new Application();
     }

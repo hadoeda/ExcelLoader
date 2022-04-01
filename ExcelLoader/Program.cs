@@ -11,17 +11,6 @@ namespace ExcelLoader
   public class Program
   {
     #region Константы
-
-    /// <summary>
-    /// Путь к excel файлу.
-    /// </summary>
-    private static readonly string ExcelFilePath;
-
-    /// <summary>
-    /// Путь к выходному файлу.
-    /// </summary>
-    private static readonly string OutFilePath;
-
     /// <summary>
     /// Имя файла для сохранения записей.
     /// </summary>
@@ -42,13 +31,16 @@ namespace ExcelLoader
     /// <param name="args">Аргументы командной строки.</param>
     public static void Main(string[] args)
     {
-      using (var loader = new ExcelPriceLoader())
+      var excelFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ExcelFileName);
+      var outFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, OutFileName);
+
+      using (var loader = new ExcelProductLoader())
       {
-        var prices = loader.Load(ExcelFilePath);
+        var prices = loader.Load(excelFilePath);
 
         var filtered = prices.Where(p => p.Price > 2000)
           .OrderBy(p => p.Name);
-        WriteToFile(filtered);
+        WriteToFile(filtered, outFilePath);
       }
     }
 
@@ -56,9 +48,10 @@ namespace ExcelLoader
     /// Записать товары в файл.
     /// </summary>
     /// <param name="records">Товары.</param>
-    private static void WriteToFile(IEnumerable<PriceRecord> records)
+    /// <param name="filePath">Путь файла.</param>
+    private static void WriteToFile(IEnumerable<Product> records, string filePath)
     {
-      using (var file = new StreamWriter(OutFilePath, false))
+      using (var file = new StreamWriter(filePath, false))
       {
         foreach (var record in records)
           file.WriteLine($"{record.Name}  {record.Price}");
@@ -66,19 +59,6 @@ namespace ExcelLoader
         file.Flush();
       }
     }
-    #endregion
-
-    #region Конструкторы
-
-    /// <summary>
-    /// Конструктор.
-    /// </summary>
-    static Program()
-    {
-      ExcelFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{ExcelFileName}";
-      OutFilePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{OutFileName}";
-    }
-
     #endregion
   }
 }

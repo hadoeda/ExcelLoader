@@ -1,9 +1,9 @@
 ﻿namespace ExcelLoader
 {
   /// <summary>
-  /// Запись "Товар - Цена".
+  /// Товар.
   /// </summary>
-  internal sealed class PriceRecord
+  internal sealed class Product
   {
     #region Поля и свойства
 
@@ -26,7 +26,7 @@
     /// </summary>
     /// <param name="name">Имя товара.</param>
     /// <param name="price">Цена товара.</param>
-    public PriceRecord(string name, double price)
+    public Product(string name, double price)
     {
       this.Name = name;
       this.Price = price;
